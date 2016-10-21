@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+	<mapping path="/wap*" decorator="/wap/layout/default.html" />
+
+	<mapping path="/wap/static*" exclue="true" />
+	
+</sitemesh>

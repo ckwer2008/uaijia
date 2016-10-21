@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>优爱家--爱生活爱段子</title>
+<link rel="shortcut icon" type="image/x-icon" href="/static/images/favicon.png" />
+<link rel="stylesheet" type="text/css" href="/static/style.css" media="all" />
+<link rel="stylesheet" type="text/css" href="/static/type/goudy.css" media="all" />
+<script type="text/javascript" src="/static/js/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+<div id="body-wrapper"> 
+  <div id="header">
+    <div class="logo">
+      <a href="index.html"><img src="/static/images/logo.png" alt="" /></a>
+    </div>
+
+    
+    <!-- Begin Menu -->
+    <div class="menu">
+      <ul class="sf-menu">
+        <li><a href="javascript:;">爱</a></li>
+        <li><a href="javascript:;">家</a></li>
+        <li><a href="javascript:;">爱</a></li>
+        <li><a href="javascript:;">生</a></li>
+        <li><a href="javascript:;">活</a></li>
+	  	<li><a href="javascript:;">爱</a></li>
+	  	<li><a href="javascript:;">段</a></li>
+	  	<li><a href="javascript:;">子</a></li>
+      </ul>
+    </div>
+    <div class="clear"></div>
+    <!-- End Menu --> 
+    
+  </div>
+
+  <div id="wrapper" ng-app="myApp" ng-controller="myCtrl">
+
+    <div class="intro">朋友，听我一句劝吧，放下手机，走出段子的世界，读几页自己喜欢的书，出去阳光里走走，要么骑骑自行车，爬爬山出点汗，天黑了约几个好久不见的朋友喝喝茶，聊聊天，随便做些什么，一天下来，你就会发现，还是段子有意思。</div>
+  
+  	<!-- Begin Container -->
+  	<div class="container">
+	</div>
+	
+	<div class="sidebar">
+		<div class="sidebox">
+			<h3 class="line">搜索</h3>
+			<form class="searchform" method="get">
+				<input type="text" id="s" name="s" value="keyword" onfocus="this.value=''" onblur="this.value='keyword'"/>
+			</form>
+		</div>
+	</div>
+
+    <div class="clear"></div>
+    
+  </div>
+
+  <div class="push"></div>
+</div>
+
+<div id="footer">
+  <div class="footer">
+    <p>Copyright &copy; 2016 陈楷文</p>
+  </div>
+</div>
+
+
+<script type="application/javascript">
+	$(function() {
+		$(window).scroll(function() {
+			if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+				pullJoke();
+			}
+		});
+		pullJoke();
+	});
+	
+	function pullJoke() {
+		var text = '<div class="post text" ng-repeat="joke in jokes"><div class="content"><div class="top"></div> <div class="middle"> <div class="post-text"> <p>{{joke.content}}</p></div><div class="meta-wrapper"><div class="meta"><ul class="post-info"><li><span class="post-link"></span><a href="#">10-26 19:30</a></li><li><span class="post-tag"></span><a href="#">可爱</a>, <a href="#">腐女</a></li></ul><div class="share"><span class="post-share"></span><a href="#">分享</a></div><div class="clear"></div></div></div></div><div class="bottom"></div></div></div>';
+		$.ajax({
+			type : "post",
+			url : '/joke/list',
+			dataType : "json",
+			success : function(data) {
+				for(var i = 0;i<data.length;i++) {
+					var tmp = text.replace("{{joke.content}}", data[i].content);
+					$(".container").append(tmp);
+				}
+			}
+		});
+	}
+
+
+	function setCookie(name,value) {
+		var Days = 30;
+		var exp = new Date();
+		exp.setTime(exp.getTime() + Days*24*60*60*1000);
+		document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+	}
+
+	function getCookie(name) {
+		var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+		if(arr=document.cookie.match(reg))
+			return unescape(arr[2]);
+		else
+			return null;
+	}
+</script>
+
+
+</body>
+</html>
