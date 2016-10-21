@@ -9,3 +9,4 @@ bin/
 doc/
 /src/test/
 /src/main/java/com/uaijia/Crawler.java
+/src/main/filters/profile.dev.properties
