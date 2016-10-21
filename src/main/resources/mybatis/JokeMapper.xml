@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uaijia.joke.dao.JokeMapper">
+  <resultMap id="BaseResultMap" type="com.uaijia.entity.Joke">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="digg_count" jdbcType="INTEGER" property="diggCount" />
+    <result column="share_count" jdbcType="INTEGER" property="shareCount" />
+    <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
+    <result column="click_count" jdbcType="INTEGER" property="clickCount" />
+    <result column="favorite_count" jdbcType="INTEGER" property="favoriteCount" />
+    <result column="is_hot" jdbcType="BIT" property="isHot" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="content_md5" jdbcType="VARCHAR" property="contentMd5" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, CAST(content AS CHAR CHARACTER SET utf8) content, digg_count, share_count, comment_count, click_count, favorite_count,
+    is_hot, source, content_md5, created_time, updated_time
+  </sql>
+
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_joke
+    ORDER BY id DESC
+  </select>
+
+  <select id="selectAllNormal" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_joke WHERE status = 0
+    ORDER BY id DESC
+  </select>
+
+  <select id="selectAllNormalBeforeId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_joke WHERE status = 0 AND id &lt; #{libId}
+    ORDER BY id DESC
+  </select>
+
+  <select id="selectAllNormalAfterId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_joke WHERE status = 0 AND id &gt; #{libId}
+    ORDER BY id DESC
+  </select>
+
+  <insert id="insertBatch" parameterType="com.uaijia.entity.Joke">
+    INSERT INTO t_joke (content, content_md5, source)
+    VALUES
+    <foreach collection="jokes" item="joke" index="index" separator="," >
+      (#{joke.content},#{joke.contentMd5},#{joke.source})
+    </foreach>
+  </insert>
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_joke
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_joke
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.uaijia.entity.Joke">
+    insert into t_joke (id, title, content, 
+      digg_count, share_count, comment_count, 
+      click_count, favorite_count, is_hot, 
+      source, content_md5, created_time, 
+      updated_time)
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{diggCount,jdbcType=INTEGER}, #{shareCount,jdbcType=INTEGER}, #{commentCount,jdbcType=INTEGER}, 
+      #{clickCount,jdbcType=INTEGER}, #{favoriteCount,jdbcType=INTEGER}, #{isHot,jdbcType=BIT}, 
+      #{source,jdbcType=VARCHAR}, #{contentMd5,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.uaijia.entity.Joke">
+    insert into t_joke
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="diggCount != null">
+        digg_count,
+      </if>
+      <if test="shareCount != null">
+        share_count,
+      </if>
+      <if test="commentCount != null">
+        comment_count,
+      </if>
+      <if test="clickCount != null">
+        click_count,
+      </if>
+      <if test="favoriteCount != null">
+        favorite_count,
+      </if>
+      <if test="isHot != null">
+        is_hot,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+      <if test="contentMd5 != null">
+        content_md5,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="diggCount != null">
+        #{diggCount,jdbcType=INTEGER},
+      </if>
+      <if test="shareCount != null">
+        #{shareCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentCount != null">
+        #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="clickCount != null">
+        #{clickCount,jdbcType=INTEGER},
+      </if>
+      <if test="favoriteCount != null">
+        #{favoriteCount,jdbcType=INTEGER},
+      </if>
+      <if test="isHot != null">
+        #{isHot,jdbcType=BIT},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="contentMd5 != null">
+        #{contentMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.uaijia.entity.Joke">
+    update t_joke
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="diggCount != null">
+        digg_count = #{diggCount,jdbcType=INTEGER},
+      </if>
+      <if test="shareCount != null">
+        share_count = #{shareCount,jdbcType=INTEGER},
+      </if>
+      <if test="commentCount != null">
+        comment_count = #{commentCount,jdbcType=INTEGER},
+      </if>
+      <if test="clickCount != null">
+        click_count = #{clickCount,jdbcType=INTEGER},
+      </if>
+      <if test="favoriteCount != null">
+        favorite_count = #{favoriteCount,jdbcType=INTEGER},
+      </if>
+      <if test="isHot != null">
+        is_hot = #{isHot,jdbcType=BIT},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="contentMd5 != null">
+        content_md5 = #{contentMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.uaijia.entity.Joke">
+    update t_joke
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      digg_count = #{diggCount,jdbcType=INTEGER},
+      share_count = #{shareCount,jdbcType=INTEGER},
+      comment_count = #{commentCount,jdbcType=INTEGER},
+      click_count = #{clickCount,jdbcType=INTEGER},
+      favorite_count = #{favoriteCount,jdbcType=INTEGER},
+      is_hot = #{isHot,jdbcType=BIT},
+      source = #{source,jdbcType=VARCHAR},
+      content_md5 = #{contentMd5,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
