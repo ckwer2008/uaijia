@@ -7,4 +7,4 @@ target/
 bin/
 .idea/
 doc/
-/src/main/java/com/uaijia/Crawler.java
+/src/test/java/Crawler.java
