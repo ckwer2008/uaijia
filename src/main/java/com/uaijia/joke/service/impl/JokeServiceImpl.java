@@ -23,9 +23,14 @@ public class JokeServiceImpl implements JokeService{
     @Resource
     private JokeMapper jokeMapper;
 
-    private final static long libId = 32800;
+    private final static long libId = 39500;
 
     private Map<String,List<Joke>> newJokeMap = new HashMap<>();
+
+    @Override
+    public Joke find(Long id) {
+        return jokeMapper.selectByPrimaryKey(id);
+    }
 
     @Override
     public List<Joke> findAllJoke() {
@@ -53,6 +58,11 @@ public class JokeServiceImpl implements JokeService{
     }
 
     @Override
+    public void update(Joke joke) {
+        jokeMapper.updateByPrimaryKeySelective(joke);
+    }
+
+    @Override
     public void saveBatch(List<Joke> jokes) {
         jokeMapper.insertBatch(jokes);
     }
@@ -71,6 +81,16 @@ public class JokeServiceImpl implements JokeService{
             }
             newJokesTmp.add(newJokes.get(i));
         }
+    }
+
+    @Override
+    public void addDigg(Long jokeId) {
+        jokeMapper.addDigg(jokeId,1);
+    }
+
+    @Override
+    public void addBury(Long jokeId) {
+        jokeMapper.addBury(jokeId,1);
     }
 
     public Map<String, List<Joke>> getNewJokeMap() {

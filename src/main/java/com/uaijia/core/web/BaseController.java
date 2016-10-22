@@ -12,7 +12,11 @@ public class BaseController {
 	public AjaxResult returnSuccess(Object obj){
 		return new AjaxResult(obj);
 	}
-	
+
+	public AjaxResult returnFailue(){
+		return new AjaxResult(ResultConstant.CODE_FAILURE);
+	}
+
 	public AjaxResult returnFailue(String message){
 		return new AjaxResult(ResultConstant.CODE_FAILURE,message);
 	}

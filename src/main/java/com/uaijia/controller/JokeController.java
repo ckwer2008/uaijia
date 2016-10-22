@@ -2,8 +2,11 @@ package com.uaijia.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.uaijia.config.ResultConstant;
 import com.uaijia.core.util.CookieUtil;
 import com.uaijia.core.util.WebUtil;
+import com.uaijia.core.web.BaseController;
+import com.uaijia.core.web.vo.AjaxResult;
 import com.uaijia.entity.Joke;
 import com.uaijia.joke.service.JokeService;
 import org.apache.commons.collections.CollectionUtils;
@@ -11,9 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -29,13 +30,13 @@ import java.util.Set;
  */
 @Controller
 @RequestMapping("/joke")
-public class JokeController {
+public class JokeController extends BaseController{
 
     @Resource
     private JokeService jokeService;
 
     /**
-     * AJAX获取段子
+     * 段子列表
      */
     @RequestMapping(value = "/list")
     @ResponseBody
@@ -85,5 +86,46 @@ public class JokeController {
 
         return pager.getResult();
     }
+
+    @RequestMapping(value = "/detail/{id}")
+    @ResponseBody
+    public AjaxResult detail(ModelMap model, @PathVariable("id") Long id){
+        try{
+            Joke joke = jokeService.find(id);
+            return returnSuccess(joke);
+        }catch (Exception e){
+            e.printStackTrace();
+            return returnFailue();
+        }
+    }
+
+
+    @RequestMapping(value = "/handup/{id}")
+    @ResponseBody
+    public AjaxResult handup(ModelMap model, @PathVariable("id") Long id){
+        try{
+            jokeService.addDigg(id);
+            return returnSuccess();
+        }catch (Exception e){
+            e.printStackTrace();
+            return returnFailue();
+        }
+    }
+
+
+    @RequestMapping(value = "/bury/{id}")
+    @ResponseBody
+    public AjaxResult bury(ModelMap model, @PathVariable("id") Long id){
+        try{
+            jokeService.addBury(id);
+            return returnSuccess();
+        }catch (Exception e){
+            e.printStackTrace();
+            return returnFailue();
+        }
+    }
+
+
+
 
 }

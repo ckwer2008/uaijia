@@ -16,7 +16,7 @@ public interface UserService {
 	
 	void editUser();
 	
-	User findUserById(int id);
+	User findUserById(Long id);
 	
 	/**
 	 * 根据用户名查找用户

@@ -5,7 +5,9 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="content_share" jdbcType="VARCHAR" property="contentShare" />
     <result column="digg_count" jdbcType="INTEGER" property="diggCount" />
+    <result column="bury_count" jdbcType="INTEGER" property="buryCount" />
     <result column="share_count" jdbcType="INTEGER" property="shareCount" />
     <result column="comment_count" jdbcType="INTEGER" property="commentCount" />
     <result column="click_count" jdbcType="INTEGER" property="clickCount" />
@@ -17,7 +19,7 @@
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, title, CAST(content AS CHAR CHARACTER SET utf8) content, digg_count, share_count, comment_count, click_count, favorite_count,
+    id, title, CAST(content AS CHAR CHARACTER SET utf8) content, content_share, digg_count, bury_count, share_count, comment_count, click_count, favorite_count,
     is_hot, source, content_md5, created_time, updated_time
   </sql>
 
@@ -27,6 +29,7 @@
     <include refid="Base_Column_List" />
     FROM t_joke
     ORDER BY id DESC
+    limit 11889,1000
   </select>
 
   <select id="selectAllNormal" resultMap="BaseResultMap">
@@ -58,6 +61,31 @@
     </foreach>
   </insert>
 
+  <update id="addHandup" parameterType="java.lang.Integer">
+    update t_joke
+    set digg_count = digg_count + #{diggCount}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="addDigg">
+    update t_joke
+    set digg_count = digg_count + #{num}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="addBury">
+    update t_joke
+    set bury_count = bury_count + #{num}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+
+
+
+
+
+
 
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -71,13 +99,13 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.uaijia.entity.Joke">
-    insert into t_joke (id, title, content, 
-      digg_count, share_count, comment_count, 
+    insert into t_joke (id, title, content, content_share,
+      digg_count,bury_count, share_count, comment_count,
       click_count, favorite_count, is_hot, 
       source, content_md5, created_time, 
       updated_time)
-    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{diggCount,jdbcType=INTEGER}, #{shareCount,jdbcType=INTEGER}, #{commentCount,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{contentShare,jdbcType=VARCHAR},
+      #{diggCount,jdbcType=INTEGER},#{buryCount,jdbcType=INTEGER}, #{shareCount,jdbcType=INTEGER}, #{commentCount,jdbcType=INTEGER},
       #{clickCount,jdbcType=INTEGER}, #{favoriteCount,jdbcType=INTEGER}, #{isHot,jdbcType=BIT}, 
       #{source,jdbcType=VARCHAR}, #{contentMd5,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
       #{updatedTime,jdbcType=TIMESTAMP})
@@ -94,8 +122,14 @@
       <if test="content != null">
         content,
       </if>
+      <if test="contentShare != null">
+        content_share,
+      </if>
       <if test="diggCount != null">
         digg_count,
+      </if>
+      <if test="buryCount != null">
+        bury_count,
       </if>
       <if test="shareCount != null">
         share_count,
@@ -135,8 +169,14 @@
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
       </if>
+      <if test="contentShare != null">
+        #{contentShare,jdbcType=VARCHAR},
+      </if>
       <if test="diggCount != null">
         #{diggCount,jdbcType=INTEGER},
+      </if>
+      <if test="buryCount != null">
+        #{buryCount,jdbcType=INTEGER},
       </if>
       <if test="shareCount != null">
         #{shareCount,jdbcType=INTEGER},
@@ -176,8 +216,14 @@
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
       </if>
+      <if test="contentShare != null">
+        content_share = #{contentShare,jdbcType=VARCHAR},
+      </if>
       <if test="diggCount != null">
         digg_count = #{diggCount,jdbcType=INTEGER},
+      </if>
+      <if test="buryCount != null">
+        bury_count = #{buryCount,jdbcType=INTEGER},
       </if>
       <if test="shareCount != null">
         share_count = #{shareCount,jdbcType=INTEGER},
@@ -213,7 +259,9 @@
     update t_joke
     set title = #{title,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
+      content_share = #{contentShare,jdbcType=VARCHAR},
       digg_count = #{diggCount,jdbcType=INTEGER},
+      bury_count = #{buryCount,jdbcType=INTEGER},
       share_count = #{shareCount,jdbcType=INTEGER},
       comment_count = #{commentCount,jdbcType=INTEGER},
       click_count = #{clickCount,jdbcType=INTEGER},

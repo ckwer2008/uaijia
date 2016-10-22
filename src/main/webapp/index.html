@@ -7,6 +7,14 @@
 <link rel="stylesheet" type="text/css" href="/static/style.css" media="all" />
 <link rel="stylesheet" type="text/css" href="/static/type/goudy.css" media="all" />
 <script type="text/javascript" src="/static/js/jquery-1.7.2.min.js"></script>
+
+<script type="text/css">
+	.share .bds_more{
+		background: url('/static/images/icon-postshare.png') no-repeat;
+	}
+
+</script>
+
 </head>
 <body>
 <div id="body-wrapper"> 
@@ -34,7 +42,7 @@
     
   </div>
 
-  <div id="wrapper" ng-app="myApp" ng-controller="myCtrl">
+  <div id="wrapper">
 
     <div class="intro">朋友，听我一句劝吧，放下手机，走出段子的世界，读几页自己喜欢的书，出去阳光里走走，要么骑骑自行车，爬爬山出点汗，天黑了约几个好久不见的朋友喝喝茶，聊聊天，随便做些什么，一天下来，你就会发现，还是段子有意思。</div>
   
@@ -52,7 +60,7 @@
 	</div>
 
     <div class="clear"></div>
-    
+
   </div>
 
   <div class="push"></div>
@@ -69,44 +77,78 @@
 	$(function() {
 		$(window).scroll(function() {
 			if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-				pullJoke();
+				pullJokes();
 			}
 		});
-		pullJoke();
+		pullJokes();
 	});
 	
-	function pullJoke() {
-		var text = '<div class="post text" ng-repeat="joke in jokes"><div class="content"><div class="top"></div> <div class="middle"> <div class="post-text"> <p>{{joke.content}}</p></div><div class="meta-wrapper"><div class="meta"><ul class="post-info"><li><span class="post-link"></span><a href="#">10-26 19:30</a></li><li><span class="post-tag"></span><a href="#">可爱</a>, <a href="#">腐女</a></li></ul><div class="share"><span class="post-share"></span><a href="#">分享</a></div><div class="clear"></div></div></div></div><div class="bottom"></div></div></div>';
+	function pullJokes() {
+		var text = '<div class="post text"><div class="content"><div class="top"></div> <div class="middle"> ' +
+				'<div class="post-text"><a href="javascript:;" onclick="goDetail({{joke.id}})"><p>{{joke.content}}</p></a></div>' +
+				'<div class="meta-wrapper"><div class="meta">' +
+				'<ul class="post-info"><li><a class="action-btn action-btn-left" href="javascript:;" onclick="handup(this,{{joke.id}})"> <span class="post-handup"></span><span>{{joke.diggCount}}</span></a></li><li><a class="action-btn action-btn-left" href="javascript:;" onclick="bury(this,{{joke.id}})"> <span class="post-handdown"></span><span>{{joke.buryCount}}</span></a></li></ul> ' +
+				'<div class="share"><div class="bdsharebuttonbox" data-text="{\'text\':\'这里写入您想要自定义的分享内容A\'}"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a></div></div> <div class="clear"></div></div></div></div><div class="bottom"></div></div></div>';
 		$.ajax({
 			type : "post",
 			url : '/joke/list',
 			dataType : "json",
 			success : function(data) {
 				for(var i = 0;i<data.length;i++) {
-					var tmp = text.replace("{{joke.content}}", data[i].content);
+					var tmp = text.replace("{{joke.content}}", data[i].content).replace("{{joke.diggCount}}", data[i].diggCount)
+							.replace("{{joke.buryCount}}", data[i].buryCount).replace(new RegExp("{{joke.id}}","gm"), data[i].id);
 					$(".container").append(tmp);
 				}
+				share();
+			}
+		});
+	}
+
+	function goDetail(jokeId) {
+		location.href = "/html/detail.html?id="+jokeId;
+	}
+
+	function handup(t,jokeId){
+		var _this = $(t);
+		_this.attr('onclick',"false");
+		var _handup = _this.children("span").eq(1);
+		var handup_num = parseInt(_handup.html());
+		_handup.html(handup_num+1);
+		$.ajax({
+			type : "post",
+			url : '/joke/handup/'+jokeId,
+			dataType : "json",
+			success : function(data) {
+				_this.attr('onclick',"handup(this,"+jokeId+")");
+			}
+		});
+	}
+
+	function bury(t,jokeId){
+		var _this = $(t);
+		_this.attr('onclick',"false");
+		var _bury = _this.children("span").eq(1);
+		var bury_num = parseInt(_bury.html());
+		_bury.html(bury_num+1);
+		$.ajax({
+			type : "post",
+			url : '/joke/bury/'+jokeId,
+			dataType : "json",
+			success : function(data) {
+				_this.attr('onclick',"bury(this,"+jokeId+")");
 			}
 		});
 	}
 
 
-	function setCookie(name,value) {
-		var Days = 30;
-		var exp = new Date();
-		exp.setTime(exp.getTime() + Days*24*60*60*1000);
-		document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
-	}
-
-	function getCookie(name) {
-		var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
-		if(arr=document.cookie.match(reg))
-			return unescape(arr[2]);
-		else
-			return null;
-	}
 </script>
 
 
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};</script>
+<script type="application/javascript">
+	function share() {
+		with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+	}
+</script>
 </body>
 </html>

@@ -12,7 +12,11 @@ public class Joke {
 
     private String content;
 
+    private String contentShare;
+
     private Integer diggCount;
+
+    private Integer buryCount;
 
     private Integer shareCount;
 
@@ -57,12 +61,28 @@ public class Joke {
         this.content = content == null ? null : content.trim();
     }
 
+    public String getContentShare() {
+        return contentShare;
+    }
+
+    public void setContentShare(String contentShare) {
+        this.contentShare = contentShare;
+    }
+
     public Integer getDiggCount() {
         return diggCount;
     }
 
     public void setDiggCount(Integer diggCount) {
         this.diggCount = diggCount;
+    }
+
+    public Integer getBuryCount() {
+        return buryCount;
+    }
+
+    public void setBuryCount(Integer buryCount) {
+        this.buryCount = buryCount;
     }
 
     public Integer getShareCount() {

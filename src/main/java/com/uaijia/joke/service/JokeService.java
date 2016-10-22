@@ -11,6 +11,8 @@ import java.util.Map;
  */
 public interface JokeService {
 
+    Joke find(Long id);
+
     List<Joke> findAllJoke();
 
     List<Joke> findAllNormalJoke();
@@ -21,9 +23,17 @@ public interface JokeService {
 
     void save(Joke joke);
 
+    void update(Joke joke);
+
     void saveBatch(List<Joke> jokes);
 
     void initNewJoke();
+
+    void addDigg(Long jokeId);
+
+    void addBury(Long jokeId);
+
+
 
 
 

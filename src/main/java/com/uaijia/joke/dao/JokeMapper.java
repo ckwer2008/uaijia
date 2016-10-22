@@ -17,4 +17,9 @@ public interface JokeMapper extends BaseMapper<Joke> {
     List<Joke> selectAllNormalAfterId(Long libId);
 
     void insertBatch(@Param("jokes") List<Joke> jokes);
+
+
+    void addDigg(@Param("id")Long id,@Param("num")int num);
+
+    void addBury(@Param("id")Long id,@Param("num")int num);
 }
