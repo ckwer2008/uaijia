@@ -4,9 +4,9 @@
 /*-----------------------------------------------------------------------------------*/
 /*	MENU
 /*-----------------------------------------------------------------------------------*/
-$(document).ready(function() {
-	$('ul.sf-menu').superfish();
-});
+// $(document).ready(function() {
+// 	$('ul.sf-menu').superfish();
+// });
 
 
 /*-----------------------------------------------------------------------------------*/
@@ -62,18 +62,18 @@ $(document).ready(function() {
 /*	MENU
 /*-----------------------------------------------------------------------------------*/
 $(window).bind("load", function() {
-  
+
 	// Add to menu container
 	$('.menu').dcHeader({
 		padding: 15,
-		beforeLoad: function(){
-			$('ul.sf-menu').superfish();
-		}
+		// beforeLoad: function(){
+		// 	$('ul.sf-menu').superfish();
+		// }
 	});
-	
+
 	// Add to header tags
 	$('.line').dcHeader({padding: 10});
-	
+
 });
 
 
@@ -117,7 +117,7 @@ $(document).ready(function() {
 /*	PRETTYPHOTO
 /*-----------------------------------------------------------------------------------*/
 
-$(document).ready(function(){
-			$("a[rel^='prettyPhoto']").prettyPhoto({autoplay_slideshow: false, overlay_gallery: false, social_tools:false, deeplinking: false, theme:'pp_default', slideshow:5000});
-		});
+// $(document).ready(function(){
+// 			$("a[rel^='prettyPhoto']").prettyPhoto({autoplay_slideshow: false, overlay_gallery: false, social_tools:false, deeplinking: false, theme:'pp_default', slideshow:5000});
+// 		});
 

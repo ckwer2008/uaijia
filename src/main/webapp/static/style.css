@@ -102,8 +102,8 @@ p {
 a {
 	text-decoration: none;
 	color: #6d9dc1;
-	-webkit-transition:all 200ms ease-in;
-	-moz-transition:all 200ms ease-in;
+	/*-webkit-transition:all 200ms ease-in;*/
+	/*-moz-transition:all 200ms ease-in;*/
 }
 /*a:hover {
 	color: #ad6069;
@@ -348,7 +348,7 @@ a.button.red:hover {
 ul {
 	line-height: 20px;
 }
-ul li {
+.menu ul li {
 	background: transparent url(/static/images/dot.png) no-repeat left 8px;
 	padding-left: 15px;
 }
@@ -1029,6 +1029,10 @@ ul.latest-posts li em.month {
 	margin-top: 4px;
 }
 
+.post .content .middle .meta .share .bds_more{
+	background: url('/static/images/icon-share.png') no-repeat;
+}
+
 .page-navi {
 	margin: -15px 0 0 63px;
 }
@@ -1175,7 +1179,6 @@ ul.cat-list:after {
 	padding: 0 7px;
 	font-size: 14px;
 	border: none;
-	font-family: "SortsMillGoudyItalic";
 	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 1);
 	-moz-box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 1);
 	box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 1);
@@ -1523,4 +1526,34 @@ ol.commentlist li {
 	padding: 0 10px 0 14px;
 	cursor: pointer;
 	line-height: 30px;
+}
+
+
+.nav {
+	background-color: #222;
+	height: 27px;
+	font-size: 13px;
+	color: #fafafa;
+}
+
+.nav .site-width {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+.nav .site-width ul {
+	width: 100%;
+}
+
+.nav .site-width ul li.login {
+	background: url(/static/images/icon-login.png) no-repeat 24px 50%;
+	box-sizing: border-box;
+	width: 70px;
+	padding: 3px;
+	text-align: right;
+}
+
+.nav .site-width ul li a {
+	text-decoration: none;
+	color: #6d9dc1;
 }

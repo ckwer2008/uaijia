@@ -10,3 +10,4 @@ doc/
 /src/main/java/com/uaijia/Crawler.java
 /src/main/filters/profile.dev.properties
 /src/main/java/com/uaijia/CrawlerContent.java
+/src/main/webapp/test.html
